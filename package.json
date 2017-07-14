@@ -10,6 +10,11 @@
     "type": "git",
     "url": "git://github.com/ivmartel/dwvgapi.git"
   },
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-cli": "~1.2",
+    "grunt-contrib-jshint": "~1.1.0"
+  },
   "scripts": {
     "test": "grunt publish --verbose"
   }
