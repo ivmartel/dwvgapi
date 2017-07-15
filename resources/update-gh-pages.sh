@@ -13,6 +13,8 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/ivmartel/dwvgapi.git gh-pages > /dev/null
   #go into directory and copy data we're interested in to that directory
   cd gh-pages
+  #in case demo does not exist
+  mkdir -p demo
   #copy new build
   cp -Rf $HOME/src/* demo
   #add, commit and push files
