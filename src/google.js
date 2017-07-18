@@ -28,7 +28,7 @@ dwv.google.Auth = function ()
     var apiKey = 'AIzaSyAWaruW4R0igZ5qcuHFHv0wNhSUp9amyJg';
 
     // The scope to use to access user's Drive items.
-    var scope = ['https://www.googleapis.com/auth/drive.readonly'];
+    var scope = 'https://www.googleapis.com/auth/drive.readonly';
 
     var googleAuth;
 
