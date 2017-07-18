@@ -16,7 +16,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   #in case demo does not exist
   mkdir -p demo
   #copy new build
-  cp -Rf $HOME/src demo
+  cp -Rf $HOME/src/* demo
   #add, commit and push files
   git add -Af .
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
