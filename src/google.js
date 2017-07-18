@@ -204,6 +204,8 @@ dwv.google.Drive = function ()
     * @param {Array} ids The list of file ids to ask for download link.
     */
     this.setIds = function (ids) {
+        console.log("- dwv.google.Drive.setIds");
+        console.log("ids: "+ids);
         idList = ids;
     };
 
@@ -228,6 +230,7 @@ dwv.google.Drive = function ()
     * The ids to ask for have been provided via the setIds.
     */
     this.load = function () {
+        console.log("- dwv.google.Drive.load");
         // set the api key
         gapi.client.setApiKey(self.apiKey);
 
@@ -255,6 +258,7 @@ dwv.google.Drive = function ()
     * @param {Array} ids The list of file ids to ask for download link.
     */
     function onApiLoad(ids) {
+        console.log("- dwv.google.Drive::onApiLoad");
         // group requests in batch (ans stay bellow quotas)
         var batch = gapi.client.newBatch();
 
@@ -307,10 +311,11 @@ dwv.google.Drive = function ()
 dwv.google.getAuthorizedCallback = function (callback) {
     var func = function (urls) {
 
+        //see https://developers.google.com/api-client-library/javascript/features/cors
+
         var user = gapi.auth2.getAuthInstance().currentUser.get();
         var oauthToken = user.getAuthResponse().access_token;
 
-        //see https://developers.google.com/api-client-library/javascript/features/cors
         var header = {
             "name": "Authorization",
             //"value": "Bearer " + gapi.auth.getToken().access_token
