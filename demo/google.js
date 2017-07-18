@@ -44,35 +44,13 @@ dwv.google.Auth = function ()
      * Load the API and authentify silently.
      */
      this.loadSilent = function () {
-         immediate = true;
-         gapi.load('auth', {'callback': onApiLoad});
+         //immediate = true;
+         //gapi.load('auth', {'callback': onApiLoad});
+
+         // Load the API's client and auth2 modules.
+         // Call the initClient function after the modules load.
+         gapi.load('client:auth2', onApiLoad);
      };
-
-    this.init = function () {
-        // Retrieve the discovery document for version 3 of Google Drive API.
-        // In practice, your app can retrieve one or more discovery documents.
-        var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
-
-        // Initialize the gapi.client object, which app uses to make API requests.
-        // Get API key and client ID from API Console.
-        // 'scope' field specifies space-delimited list of access scopes.
-        gapi.client.init({
-            'apiKey': apiKey,
-            'discoveryDocs': [discoveryUrl],
-            'clientId': clientId,
-            'scope': scope
-        }).then(function () {
-            googleAuth = gapi.auth2.getAuthInstance();
-
-            // Listen for sign-in state changes.
-            googleAuth.isSignedIn.listen(handleResult2);
-        });
-    };
-
-    this.IsAuthorized = function () {
-        var user = googleAuth.currentUser.get();
-        return user.hasGrantedScopes(scope);
-    };
 
     this.signIn = function () {
         googleAuth.signIn();
@@ -96,13 +74,32 @@ dwv.google.Auth = function ()
     function onApiLoad() {
         // see https://developers.google.com/api-client-library/...
         //   ...javascript/reference/referencedocs#gapiauthauthorizeparams
-        gapi.auth.authorize({
+        /*gapi.auth.authorize({
             'client_id': self.clientId,
             'scope': self.scope,
             'immediate': immediate
             },
             handleResult
-        );
+        );*/
+
+        // Retrieve the discovery document for version 3 of Google Drive API.
+        // In practice, your app can retrieve one or more discovery documents.
+        var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+
+        // Initialize the gapi.client object, which app uses to make API requests.
+        // Get API key and client ID from API Console.
+        // 'scope' field specifies space-delimited list of access scopes.
+        gapi.client.init({
+            'apiKey': apiKey,
+            'discoveryDocs': [discoveryUrl],
+            'clientId': clientId,
+            'scope': scope
+        }).then(function () {
+            googleAuth = gapi.auth2.getAuthInstance();
+
+            // Listen for sign-in state changes.
+            googleAuth.isSignedIn.listen(handleResult);
+        });
     }
 
     /**
@@ -111,7 +108,9 @@ dwv.google.Auth = function ()
     * See https://developers.google.com/api-client-library/...
     *   ...javascript/reference/referencedocs#OAuth20TokenObject
     */
-    function handleResult(authResult) {
+    function handleResult(/*authResult*/) {
+        var user = googleAuth.currentUser.get();
+        var authResult = user.hasGrantedScopes(scope);
         if (authResult && !authResult.error) {
             self.onload();
         }
@@ -119,16 +118,6 @@ dwv.google.Auth = function ()
             self.onfail();
         }
     }
-
-    function handleResult2() {
-        if (self.IsAuthorized()) {
-            self.onload();
-        }
-        else {
-            self.onfail();
-        }
-    }
-
 };
 
 /**

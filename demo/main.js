@@ -22,8 +22,7 @@ gapitest.decodeQuery = function (query, callback)
         };
         gDrive.onload = dwv.google.getAuthorizedCallback(callback);
         // launch with silent auth
-        //gAuth.loadSilent();
-        gAuth.init();
+        gAuth.loadSilent();
     }
     else {
         // default
