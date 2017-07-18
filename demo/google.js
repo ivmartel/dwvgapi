@@ -306,11 +306,15 @@ dwv.google.Drive = function ()
  */
 dwv.google.getAuthorizedCallback = function (callback) {
     var func = function (urls) {
+
+        var user = gapi.auth2.getAuthInstance().currentUser.get();
+        var oauthToken = user.getAuthResponse().access_token;
+
         //see https://developers.google.com/api-client-library/javascript/features/cors
         var header = {
             "name": "Authorization",
             //"value": "Bearer " + gapi.auth.getToken().access_token
-            "value": "Bearer " + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse(true).access_token
+            "value": "Bearer " + oauthToken.access_token
         };
         callback(urls, [header]);
     };
