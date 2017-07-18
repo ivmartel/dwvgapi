@@ -23,10 +23,15 @@ dwv.google.Auth = function ()
     var immediate = false;
 
     // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
-    this.clientId = "575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
-    // The scope to use to access user's Drive items.
-    this.scope = ['https://www.googleapis.com/auth/drive.readonly'];
+    var clientId = "575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
+    // The Browser API key obtained from the Google Developers Console.
+    var apiKey = 'AIzaSyAWaruW4R0igZ5qcuHFHv0wNhSUp9amyJg';
 
+    // The scope to use to access user's Drive items.
+    var scope = ['https://www.googleapis.com/auth/drive.readonly'];
+
+    var googleAuth;
+    
     /**
     * Load the API and authentify.
     */
@@ -42,7 +47,37 @@ dwv.google.Auth = function ()
          immediate = true;
          gapi.load('auth', {'callback': onApiLoad});
      };
+    
+    this.init = function () {
+        // Retrieve the discovery document for version 3 of Google Drive API.
+        // In practice, your app can retrieve one or more discovery documents.
+        var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
 
+        // Initialize the gapi.client object, which app uses to make API requests.
+        // Get API key and client ID from API Console.
+        // 'scope' field specifies space-delimited list of access scopes.
+        gapi.client.init({
+            'apiKey': apiKey,
+            'discoveryDocs': [discoveryUrl],
+            'clientId': clientId,
+            'scope': scope
+        }).then(function () {
+            googleAuth = gapi.auth2.getAuthInstance();
+            
+            // Listen for sign-in state changes.
+            googleAuth.isSignedIn.listen(handleResult2);
+        });
+    }
+    
+    this.IsAuthorized = function () {
+        var user = googleAuth.currentUser.get();
+        return user.hasGrantedScopes(scope);
+    }
+    
+    this.signIn = function () {
+        googleAuth.signIn();
+    }
+    
     /**
     * Called if the authentification is successful.
     * Default does nothing. No input parameters.
@@ -84,6 +119,16 @@ dwv.google.Auth = function ()
             self.onfail();
         }
     }
+    
+    function handleResult2() {
+        if (self.IsAuthorized()) {
+            self.onload();
+        }
+        else {
+            self.onfail();
+        }
+    }
+
 };
 
 /**
