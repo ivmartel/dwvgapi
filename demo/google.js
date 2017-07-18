@@ -106,6 +106,7 @@ dwv.google.Auth = function ()
             googleAuth.isSignedIn.listen(handleResult);
 
             self.signIn();
+            handleResult();
         });
     }
 
@@ -115,8 +116,9 @@ dwv.google.Auth = function ()
     * See https://developers.google.com/api-client-library/...
     *   ...javascript/reference/referencedocs#OAuth20TokenObject
     */
-    function handleResult(/*authResult*/) {
+    function handleResult(/*authResult*/isSignedIn) {
         console.log("- dwv.google.Auth::handleResult");
+        console.log("isSignedIn: "+isSignedIn);
         var user = googleAuth.currentUser.get();
         var isAuthorized  = user.hasGrantedScopes(scope);
         console.log("isAuthorized : "+isAuthorized );
