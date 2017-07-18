@@ -31,7 +31,7 @@ dwv.google.Auth = function ()
     var scope = ['https://www.googleapis.com/auth/drive.readonly'];
 
     var googleAuth;
-    
+
     /**
     * Load the API and authentify.
     */
@@ -47,7 +47,7 @@ dwv.google.Auth = function ()
          immediate = true;
          gapi.load('auth', {'callback': onApiLoad});
      };
-    
+
     this.init = function () {
         // Retrieve the discovery document for version 3 of Google Drive API.
         // In practice, your app can retrieve one or more discovery documents.
@@ -63,21 +63,21 @@ dwv.google.Auth = function ()
             'scope': scope
         }).then(function () {
             googleAuth = gapi.auth2.getAuthInstance();
-            
+
             // Listen for sign-in state changes.
             googleAuth.isSignedIn.listen(handleResult2);
         });
-    }
-    
+    };
+
     this.IsAuthorized = function () {
         var user = googleAuth.currentUser.get();
         return user.hasGrantedScopes(scope);
-    }
-    
+    };
+
     this.signIn = function () {
         googleAuth.signIn();
-    }
-    
+    };
+
     /**
     * Called if the authentification is successful.
     * Default does nothing. No input parameters.
@@ -119,7 +119,7 @@ dwv.google.Auth = function ()
             self.onfail();
         }
     }
-    
+
     function handleResult2() {
         if (self.IsAuthorized()) {
             self.onload();
