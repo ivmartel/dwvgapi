@@ -103,9 +103,10 @@ dwv.google.Auth = function ()
             googleAuth = gapi.auth2.getAuthInstance();
 
             // Listen for sign-in state changes.
-            googleAuth.isSignedIn.listen(self.handleResult);
+            googleAuth.isSignedIn.listen(handleResult);
 
             self.signIn();
+            handleResult();
         });
     }
 
