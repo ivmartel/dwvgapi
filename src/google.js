@@ -98,10 +98,14 @@ dwv.google.Auth = function ()
             'clientId': clientId,
             'scope': scope
         }).then(function () {
+            console.log("- dwv.google.Auth::onApiLoad: after client.init");
+
             googleAuth = gapi.auth2.getAuthInstance();
 
             // Listen for sign-in state changes.
             googleAuth.isSignedIn.listen(handleResult);
+
+            self.signIn();
         });
     }
 
