@@ -44,6 +44,7 @@ dwv.google.Auth = function ()
      * Load the API and authentify silently.
      */
      this.loadSilent = function () {
+         console.log("- dwv.google.Auth.loadSilent");
          //immediate = true;
          //gapi.load('auth', {'callback': onApiLoad});
 
@@ -53,6 +54,7 @@ dwv.google.Auth = function ()
      };
 
     this.signIn = function () {
+        console.log("- dwv.google.Auth.signIn");
         googleAuth.signIn();
     };
 
@@ -72,6 +74,7 @@ dwv.google.Auth = function ()
     * Authentificate.
     */
     function onApiLoad() {
+        console.log("- dwv.google.Auth::onApiLoad");
         // see https://developers.google.com/api-client-library/...
         //   ...javascript/reference/referencedocs#gapiauthauthorizeparams
         /*gapi.auth.authorize({
@@ -109,12 +112,14 @@ dwv.google.Auth = function ()
     *   ...javascript/reference/referencedocs#OAuth20TokenObject
     */
     function handleResult(/*authResult*/) {
+        console.log("- dwv.google.Auth::handleResult");
         var user = googleAuth.currentUser.get();
-        var authResult = user.hasGrantedScopes(scope);
-        if (authResult && !authResult.error) {
+        var isAuthorized  = user.hasGrantedScopes(scope);
+        console.log("isAuthorized : "+isAuthorized );
+        //if (authResult && !authResult.error) {
+        if (isAuthorized ) {
             self.onload();
-        }
-        else {
+        } else {
             self.onfail();
         }
     }
