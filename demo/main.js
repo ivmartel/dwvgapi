@@ -16,12 +16,14 @@ gapitest.decodeQuery = function (query, callback)
             // explicit auth from button to allow popup
             authorizeButton.onclick = function() {
                 $("#popupAuth").popup("close");
-                gAuth.load();
+                //gAuth.load();
+                gAuth.signIn();
             };
         };
         gDrive.onload = dwv.google.getAuthorizedCallback(callback);
         // launch with silent auth
-        gAuth.loadSilent();
+        //gAuth.loadSilent();
+        gAuth.init();
     }
     else {
         // default
