@@ -237,8 +237,8 @@ dwv.google.Drive = function ()
         gapi.client.setApiKey(self.apiKey);
 
         var func = createApiLoad(self.getIds());
-        gapi.client.load('drive', 'v2', func);
-        //gapi.client.load('drive', 'v3', func);
+        //gapi.client.load('drive', 'v2', func);
+        gapi.client.load('drive', 'v3', func);
     };
 
     /**
@@ -269,8 +269,9 @@ dwv.google.Drive = function ()
             // Can't make it work, HTTPRequest sends CORS error...
             // see https://developers.google.com/drive/v3/reference/files/get
             var request = gapi.client.drive.files.get({
-                'fileId': ids[i] // v2
+                //'fileId': ids[i] // v2
                 //'fileId': ids[i], 'fields': 'webContentLink' // v3
+                'fileId': ids[i], 'alt': 'media' // v3
             });
 
             // File path with v2??
@@ -302,9 +303,8 @@ dwv.google.Drive = function ()
         // ID-response map of each requests response
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
-            urls[urls.length] = resp[respKeys[i]].downloadUrl; // v2 get
             //urls[urls.length] = resp[respKeys[i]].result.downloadUrl; // v2 request
-            //urls[urls.length] = resp[respKeys[i]].result.webContentLink; // v3
+            urls[urls.length] = resp[respKeys[i]].result.webContentLink; // v3
         }
         // call onload
         self.onload(urls);
