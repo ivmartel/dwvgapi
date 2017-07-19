@@ -301,7 +301,8 @@ dwv.google.Drive = function ()
         // ID-response map of each requests response
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
-            urls[urls.length] = resp[respKeys[i]].result.downloadUrl;
+            //urls[urls.length] = resp[respKeys[i]].result.downloadUrl; // v2
+            urls[urls.length] = resp[respKeys[i]].result.webViewLink; // v2
         }
         // call onload
         self.onload(urls);
