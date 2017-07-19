@@ -269,7 +269,7 @@ dwv.google.Drive = function ()
             // Can't make it work, HTTPRequest sends CORS error...
             // see https://developers.google.com/drive/v3/reference/files/get
             var request = gapi.client.drive.files.get({
-                'fileId': ids[i], 'fields': 'webViewLink'
+                'fileId': ids[i], 'fields': 'webContentLink'
             });
 
             // File path with v2??
@@ -297,12 +297,14 @@ dwv.google.Drive = function ()
     function handleDriveLoad(resp) {
         // link list
         var urls = [];
-        console.log(resp);
+        var url;
         // ID-response map of each requests response
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
-            //urls[urls.length] = resp[respKeys[i]].result.downloadUrl; // v2
-            urls[urls.length] = resp[respKeys[i]].result.webViewLink; // v2
+            //url = resp[respKeys[i]].result.downloadUrl; // v2
+            url = resp[respKeys[i]].result.webContentLink; // v3
+            console.log(url);
+            urls[urls.length] = url;
         }
         // call onload
         self.onload(urls);
