@@ -105,7 +105,7 @@ dwv.google.Auth = function ()
             // Listen for sign-in state changes.
             googleAuth.isSignedIn.listen(handleResult);
 
-            self.signIn();
+            //self.signIn();
             handleResult();
         });
     }
@@ -237,7 +237,8 @@ dwv.google.Drive = function ()
         gapi.client.setApiKey(self.apiKey);
 
         var func = createApiLoad(self.getIds());
-        gapi.client.load('drive', 'v3', func);
+        //gapi.client.load('drive', 'v3', func);
+        gapi.client.load('drive', 'v2', func);
     };
 
     /**
