@@ -323,7 +323,7 @@ dwv.google.getAuthorizedCallback = function (callback) {
         var header = {
             "name": "Authorization",
             //"value": "Bearer " + gapi.auth.getToken().access_token
-            "value": "Bearer " + oauthToken.access_token
+            "value": "Bearer " + oauthToken
         };
         callback(urls, [header]);
     };
