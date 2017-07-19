@@ -269,7 +269,7 @@ dwv.google.Drive = function ()
             // Can't make it work, HTTPRequest sends CORS error...
             // see https://developers.google.com/drive/v3/reference/files/get
             var request = gapi.client.drive.files.get({
-                'fileId': ids[i], 'fields': 'downloadUrl' // v2
+                'fileId': ids[i] // v2
                 //'fileId': ids[i], 'fields': 'webContentLink' // v3
             });
 
