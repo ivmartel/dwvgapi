@@ -319,7 +319,6 @@ dwv.google.getAuthorizedCallback = function (callback) {
 
         var user = gapi.auth2.getAuthInstance().currentUser.get();
         var oauthResponse = user.getAuthResponse();
-        console.log(oauthResponse);
 
         var header = {
             "name": "Authorization",
