@@ -75,6 +75,15 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
     request.onerror = function () {
         console.error("Error in XMLHttpRequest...");
     };
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                console.log(this.responseText);
+            } else {
+                console.log("Error", this.statusText);
+            }
+        }
+    };
     request.send(null);
 };
 
