@@ -58,7 +58,6 @@ gapitest.onLoadUrl = function () {
 gapitest.onInputURLs = function (urls, requestHeaders) {
     var url = urls[0];
     console.log("url: "+url);
-    console.log(requestHeaders);
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     // optional request headers
@@ -66,6 +65,7 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
         for (var j = 0; j < requestHeaders.length; ++j) {
             if ( typeof requestHeaders[j].name !== "undefined" &&
                 typeof requestHeaders[j].value !== "undefined" ) {
+                console.log(requestHeaders[j]);
                 request.setRequestHeader(requestHeaders[j].name, requestHeaders[j].value);
             }
         }
@@ -73,14 +73,14 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
     request.responseType = "arraybuffer";
     request.onload = gapitest.onLoadUrl;
     request.onerror = function () {
-        console.error("Error in XMLHttpRequest...");
+        console.error("XMLHttpRequest Error...");
     };
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
             if (this.status === 200) {
                 console.log(this.responseText);
             } else {
-                console.log("Error", this.statusText);
+                console.log("XMLHttpRequest bad status", this.statusText);
             }
         }
     };
