@@ -33,6 +33,12 @@ gapitest.decodeQuery = function (query, callback)
 // Handle an url load
 // -> display the dicom data modality
 gapitest.onLoadUrl = function () {
+
+    if (this.status !== 200 && this.status !== 0) {
+        console.error("Error status: " + this.status);
+        return;
+    }
+
     // setup the dicom parser
     var dicomParser = new dwv.dicom.DicomParser();
     // parse the buffer
@@ -66,6 +72,9 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
     }
     request.responseType = "arraybuffer";
     request.onload = gapitest.onLoadUrl;
+    request.onerror = function () {
+        console.error("Error in XMLHttpRequest...");
+    };
     request.send(null);
 };
 
