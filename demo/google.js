@@ -270,8 +270,8 @@ dwv.google.Drive = function ()
             // see https://developers.google.com/drive/v3/reference/files/get
             var request = gapi.client.drive.files.get({
                 //'fileId': ids[i] // v2
-                //'fileId': ids[i], 'fields': 'webContentLink' // v3
-                'fileId': ids[i], 'alt': 'media' // v3
+                'fileId': ids[i], 'fields': 'webContentLink' // v3
+                //'fileId': ids[i], 'alt': 'media' // v3
             });
 
             // File path with v2??
