@@ -59,17 +59,19 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
     var url = urls[0];
     console.log("url: "+url);
     var request = new XMLHttpRequest();
+
+    url += "&access_token=" + encodeURIComponent(requestHeaders[0].token);
+
     request.open('GET', url, true);
     // optional request headers
-    if ( typeof requestHeaders !== "undefined" ) {
-        for (var j = 0; j < requestHeaders.length; ++j) {
-            if ( typeof requestHeaders[j].name !== "undefined" &&
-                typeof requestHeaders[j].value !== "undefined" ) {
-                console.log(requestHeaders[j]);
-                request.setRequestHeader(requestHeaders[j].name, requestHeaders[j].value);
-            }
+    /*if ( typeof requestHeaders !== "undefined" ) {
+        var requestHeader = requestHeaders[0];
+        if ( typeof requestHeader.name !== "undefined" &&
+            typeof requestHeader.value !== "undefined" ) {
+            request.setRequestHeader(requestHeader.name, requestHeader.value);
         }
-    }
+    }*/
+
     request.responseType = "arraybuffer";
     request.onload = gapitest.onLoadUrl;
     request.onerror = function () {
