@@ -297,14 +297,11 @@ dwv.google.Drive = function ()
     function handleDriveLoad(resp) {
         // link list
         var urls = [];
-        var url;
         // ID-response map of each requests response
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
-            //url = resp[respKeys[i]].result.downloadUrl; // v2
-            url = resp[respKeys[i]].result.webContentLink; // v3
-            console.log(url);
-            urls[urls.length] = url;
+            //urls[urls.length] = resp[respKeys[i]].result.downloadUrl; // v2
+            urls[urls.length] = resp[respKeys[i]].result.webContentLink; // v3
         }
         // call onload
         self.onload(urls);
