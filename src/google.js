@@ -318,12 +318,13 @@ dwv.google.getAuthorizedCallback = function (callback) {
         //see https://developers.google.com/api-client-library/javascript/features/cors
 
         var user = gapi.auth2.getAuthInstance().currentUser.get();
-        var oauthToken = user.getAuthResponse().access_token;
+        var oauthResponse = user.getAuthResponse();
+        console.log(oauthResponse);
 
         var header = {
             "name": "Authorization",
             //"value": "Bearer " + gapi.auth.getToken().access_token
-            "value": "Bearer " + oauthToken
+            "value": "Bearer " + oauthResponse.access_token
         };
         callback(urls, [header]);
     };
