@@ -52,6 +52,7 @@ gapitest.onLoadUrl = function () {
 gapitest.onInputURLs = function (urls, requestHeaders) {
     var url = urls[0];
     console.log("url: "+url);
+    console.log(requestHeaders);
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     // optional request headers
