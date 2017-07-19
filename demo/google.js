@@ -270,7 +270,8 @@ dwv.google.Drive = function ()
             // see https://developers.google.com/drive/v3/reference/files/get
             var request = gapi.client.drive.files.get({
                 //'fileId': ids[i] // v2
-                'fileId': ids[i], 'fields': 'webContentLink' // v3
+                //'fileId': ids[i], 'fields': 'webContentLink' // v3
+                'fileId': ids[i], 'fields': 'id' // v3
                 //'fileId': ids[i], 'alt': 'media' // v3
             });
 
@@ -304,7 +305,8 @@ dwv.google.Drive = function ()
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
             //urls[urls.length] = resp[respKeys[i]].result.downloadUrl; // v2 request
-            urls[urls.length] = resp[respKeys[i]].result.webContentLink; // v3
+            //urls[urls.length] = resp[respKeys[i]].result.webContentLink; // v3
+            urls[urls.length] = "https://www.googleapis.com/drive/v3/files/"+resp[respKeys[i]].result.id+"?alt=media";
         }
         // call onload
         self.onload(urls);
