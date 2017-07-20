@@ -15,8 +15,17 @@
         <script type="text/javascript" src="ext/jquery.mobile-1.4.5.min.js"></script>
         <!-- Google -->
         <script type="text/javascript" src="ext/google-api.js"></script>
-        <script type="text/javascript" src="google.js"></script>
         <!-- local -->
+        <script type="text/javascript">
+        // log in HTML
+        dwv.log = function (text) {
+            var logli = document.createElement("li");
+            logli.appendChild(document.createTextNode(text));
+            var logul = document.getElementById("log");
+            logul.appendChild(logli);
+        };
+        </script>
+        <script type="text/javascript" src="google.js"></script>
         <script type="text/javascript" src="main.js"></script>
     </head>
 
