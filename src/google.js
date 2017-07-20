@@ -23,9 +23,9 @@ dwv.google.Auth = function ()
     var immediate = false;
 
     // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
-    var clientId = "575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
+    var clientId = "me"; //"575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
     // The Browser API key obtained from the Google Developers Console.
-    //var apiKey = 'AIzaSyAWaruW4R0igZ5qcuHFHv0wNhSUp9amyJg';
+    var apiKey = 'AIzaSyAWaruW4R0igZ5qcuHFHv0wNhSUp9amyJg';
 
     // The scope to use to access user's Drive items.
     var scope = 'https://www.googleapis.com/auth/drive.readonly';
@@ -93,7 +93,7 @@ dwv.google.Auth = function ()
         // Get API key and client ID from API Console.
         // 'scope' field specifies space-delimited list of access scopes.
         gapi.client.init({
-            'apiKey': null,
+            'apiKey': apiKey,
             'discoveryDocs': [discoveryUrl],
             'clientId': clientId,
             'scope': scope
