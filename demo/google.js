@@ -300,7 +300,6 @@ dwv.google.Drive = function ()
     function handleDriveLoad(resp) {
         // link list
         var urls = [];
-        console.log(resp);
         // ID-response map of each requests response
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
