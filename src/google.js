@@ -11,6 +11,14 @@ dwv.google = dwv.google || {};
 var gapi = gapi || {};
 var google = google || {};
 
+// log in HTML
+dwv.log = function (text) {
+    var logli = document.createElement("li");
+    logli.appendChild(document.createTextNode(text));
+    var logul = document.getElementById("log");
+    logul.appendChild(logli);
+};
+
 /**
 * Google Authentification class.
 * Allows to authentificate to google services.
@@ -44,7 +52,7 @@ dwv.google.Auth = function ()
      * Load the API and authentify silently.
      */
      this.loadSilent = function () {
-         console.log("- dwv.google.Auth.loadSilent");
+         dwv.log("dwv.google.Auth.loadSilent");
          //immediate = true;
          //gapi.load('auth', {'callback': onApiLoad});
 
@@ -54,7 +62,7 @@ dwv.google.Auth = function ()
      };
 
     this.signIn = function () {
-        console.log("- dwv.google.Auth.signIn");
+        dwv.log("dwv.google.Auth.signIn");
         googleAuth.signIn();
     };
 
@@ -74,7 +82,7 @@ dwv.google.Auth = function ()
     * Authentificate.
     */
     function onApiLoad() {
-        console.log("- dwv.google.Auth::onApiLoad");
+        dwv.log("dwv.google.Auth::onApiLoad");
         // see https://developers.google.com/api-client-library/...
         //   ...javascript/reference/referencedocs#gapiauthauthorizeparams
         /*gapi.auth.authorize({
@@ -98,7 +106,7 @@ dwv.google.Auth = function ()
             'clientId': clientId,
             'scope': scope
         }).then(function () {
-            console.log("- dwv.google.Auth::onApiLoad: after client.init");
+            dwv.log("dwv.google.Auth::onApiLoad: after client.init");
 
             googleAuth = gapi.auth2.getAuthInstance();
 
@@ -117,11 +125,11 @@ dwv.google.Auth = function ()
     *   ...javascript/reference/referencedocs#OAuth20TokenObject
     */
     function handleResult(/*authResult*/isSignedIn) {
-        console.log("- dwv.google.Auth::handleResult");
-        console.log("isSignedIn: "+isSignedIn);
+        dwv.log("dwv.google.Auth::handleResult");
+        dwv.log("isSignedIn: "+isSignedIn);
         var user = googleAuth.currentUser.get();
         var isAuthorized  = user.hasGrantedScopes(scope);
-        console.log("isAuthorized : "+isAuthorized );
+        dwv.log("isAuthorized : "+isAuthorized );
         //if (authResult && !authResult.error) {
         if (isAuthorized ) {
             self.onload();
@@ -206,8 +214,8 @@ dwv.google.Drive = function ()
     * @param {Array} ids The list of file ids to ask for download link.
     */
     this.setIds = function (ids) {
-        console.log("- dwv.google.Drive.setIds");
-        console.log("ids: "+ids);
+        dwv.log("dwv.google.Drive.setIds");
+        dwv.log("ids: "+ids);
         idList = ids;
     };
 
@@ -232,7 +240,7 @@ dwv.google.Drive = function ()
     * The ids to ask for have been provided via the setIds.
     */
     this.load = function () {
-        console.log("- dwv.google.Drive.load");
+        dwv.log("dwv.google.Drive.load");
         // set the api key
         gapi.client.setApiKey(self.apiKey);
 
@@ -261,7 +269,7 @@ dwv.google.Drive = function ()
     * @param {Array} ids The list of file ids to ask for download link.
     */
     function onApiLoad(ids) {
-        console.log("- dwv.google.Drive::onApiLoad");
+        dwv.log("dwv.google.Drive::onApiLoad");
         // group requests in batch (ans stay bellow quotas)
         var batch = gapi.client.newBatch();
 

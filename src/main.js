@@ -49,8 +49,8 @@ gapitest.onLoadUrl = function () {
     var modality = rawTags.x00080060.value[0];
 
     // display
-    var p1 = document.getElementById("p1");
-    p1.appendChild(document.createTextNode("Modality: "+modality));
+    var presult = document.getElementById("result");
+    presult.appendChild(document.createTextNode("Modality: "+modality));
 };
 
 // Handle urls from a query
