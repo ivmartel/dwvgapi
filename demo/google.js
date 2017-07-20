@@ -107,7 +107,7 @@ dwv.google.Auth = function ()
 
             //self.signIn();
             handleResult();
-        }).catch( function(error) {
+        }, function(error) {
             dwv.log("dwv.google.Auth::onApiLoad: client.init fail");
             dwv.log(error);
         });
