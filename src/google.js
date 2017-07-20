@@ -23,7 +23,7 @@ dwv.google.Auth = function ()
     var immediate = false;
 
     // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
-    var clientId = "me"; //"575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
+    var clientId = "575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
     // The Browser API key obtained from the Google Developers Console.
     var apiKey = 'AIzaSyAWaruW4R0igZ5qcuHFHv0wNhSUp9amyJg';
 
@@ -109,8 +109,8 @@ dwv.google.Auth = function ()
             handleResult();
         }, function(error) {
             dwv.log("dwv.google.Auth::onApiLoad: client.init fail");
-            dwv.log(error);
-            console.log(error);
+            dwv.log(error.error);
+            dwv.log(error.details);
         });
     }
 
