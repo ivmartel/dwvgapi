@@ -97,8 +97,8 @@ dwv.google.Auth = function ()
             'discoveryDocs': [discoveryUrl],
             'clientId': clientId,
             'scope': scope
-        }).then(function () {
-            dwv.log("dwv.google.Auth::onApiLoad: after client.init");
+        }).then( function () {
+            dwv.log("dwv.google.Auth::onApiLoad: client.init success");
 
             googleAuth = gapi.auth2.getAuthInstance();
 
@@ -107,6 +107,9 @@ dwv.google.Auth = function ()
 
             //self.signIn();
             handleResult();
+        }).catch( function(error) {
+            dwv.log("dwv.google.Auth::onApiLoad: client.init fail");
+            dwv.log(error);
         });
     }
 
