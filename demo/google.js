@@ -11,14 +11,6 @@ dwv.google = dwv.google || {};
 var gapi = gapi || {};
 var google = google || {};
 
-// log in HTML
-dwv.log = function (text) {
-    var logli = document.createElement("li");
-    logli.appendChild(document.createTextNode(text));
-    var logul = document.getElementById("log");
-    logul.appendChild(logli);
-};
-
 /**
 * Google Authentification class.
 * Allows to authentificate to google services.

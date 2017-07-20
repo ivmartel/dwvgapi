@@ -39,6 +39,8 @@ gapitest.onLoadUrl = function () {
         return;
     }
 
+    dwv.log("Loaded url!");
+
     // setup the dicom parser
     var dicomParser = new dwv.dicom.DicomParser();
     // parse the buffer
@@ -57,7 +59,8 @@ gapitest.onLoadUrl = function () {
 // -> load the first one
 gapitest.onInputURLs = function (urls, requestHeaders) {
     var url = urls[0];
-    console.log("url: "+url);
+    dwv.log("gapitest.onInputURLs");
+    dwv.log("url: "+url);
     var request = new XMLHttpRequest();
 
     //url += "&access_token=" + encodeURIComponent(requestHeaders[0].token);
@@ -81,9 +84,11 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
 };
 
 // main
-var query = dwv.utils.getUriQuery(window.location.href);
-if ( query && typeof query.input !== "undefined" ) {
-    gapitest.decodeQuery(query, gapitest.onInputURLs);
-} else {
-    console.warn("No query to process...");
-}
+$(document).ready( function() {
+    var query = dwv.utils.getUriQuery(window.location.href);
+    if ( query && typeof query.input !== "undefined" ) {
+        gapitest.decodeQuery(query, gapitest.onInputURLs);
+    } else {
+        console.warn("No query to process...");
+    }
+});
