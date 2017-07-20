@@ -93,7 +93,7 @@ dwv.google.Auth = function ()
         // Get API key and client ID from API Console.
         // 'scope' field specifies space-delimited list of access scopes.
         gapi.client.init({
-            'apiKey': apiKey,
+            'apiKey': null,
             'discoveryDocs': [discoveryUrl],
             'clientId': clientId,
             'scope': scope
@@ -110,6 +110,7 @@ dwv.google.Auth = function ()
         }, function(error) {
             dwv.log("dwv.google.Auth::onApiLoad: client.init fail");
             dwv.log(error);
+            console.log(error);
         });
     }
 
