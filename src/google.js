@@ -80,12 +80,13 @@ dwv.google.Auth = function ()
             googleAuth = gapi.auth2.getAuthInstance();
             // Listen for sign-in state changes.
             googleAuth.isSignedIn.listen(updateSigninStatus);
-            // Sign in the user if they are currently signed out.
+            // Sign in the user if they are currently signed out
+            // or call update directly
             if (googleAuth.isSignedIn.get() === false) {
-              googleAuth.signIn();
+                googleAuth.signIn();
+            } else {
+                updateSigninStatus(true);
             }
-            // Handle the initial sign-in state.
-            updateSigninStatus(googleAuth.isSignedIn.get());
 
         }, function(error) {
             dwv.log("dwv.google.Auth::onApiLoad: client.init fail");
@@ -103,9 +104,10 @@ dwv.google.Auth = function ()
         dwv.log("isSignedIn: "+isSignedIn);
 
         if (isSignedIn) {
+            // continue if authoriised
             var user = googleAuth.currentUser.get();
             var isAuthorized = user.hasGrantedScopes(scope);
-            dwv.log("isAuthorized : "+isAuthorized );
+            dwv.log("isAuthorized: "+isAuthorized );
             if (isAuthorized) {
                 self.onload();
             } else {
