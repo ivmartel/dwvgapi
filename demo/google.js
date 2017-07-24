@@ -19,9 +19,8 @@ dwv.google.Auth = function ()
 {
     // closure to self
     var self = this;
-    // immediate mode: behind the scenes token refresh
-    var immediate = false;
 
+    // TODO: move the keys in a separate server file to avoid problems
     // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
     var clientId = "575535891659-7upjbdjfkeudbavrqlra1t89rl7auubg.apps.googleusercontent.com";
     // The Browser API key obtained from the Google Developers Console.
@@ -30,33 +29,19 @@ dwv.google.Auth = function ()
     // The scope to use to access user's Drive items.
     var scope = 'https://www.googleapis.com/auth/drive.readonly';
 
+    // Google auth instance.
     var googleAuth;
-
-    /**
-    * Load the API and authentify.
-    */
-    this.load = function () {
-        immediate = false;
-        gapi.load('auth', {'callback': onApiLoad});
-    };
 
     /**
      * Load the API and authentify silently.
      */
      this.loadSilent = function () {
          dwv.log("dwv.google.Auth.loadSilent");
-         //immediate = true;
-         //gapi.load('auth', {'callback': onApiLoad});
 
          // Load the API's client and auth2 modules.
          // Call the initClient function after the modules load.
          gapi.load('client:auth2', onApiLoad);
      };
-
-    this.signIn = function () {
-        dwv.log("dwv.google.Auth.signIn");
-        googleAuth.signIn();
-    };
 
     /**
     * Called if the authentification is successful.
@@ -75,15 +60,6 @@ dwv.google.Auth = function ()
     */
     function onApiLoad() {
         dwv.log("dwv.google.Auth::onApiLoad");
-        // see https://developers.google.com/api-client-library/...
-        //   ...javascript/reference/referencedocs#gapiauthauthorizeparams
-        /*gapi.auth.authorize({
-            'client_id': self.clientId,
-            'scope': self.scope,
-            'immediate': immediate
-            },
-            handleResult
-        );*/
 
         // Retrieve the discovery document for version 3 of Google Drive API.
         // In practice, your app can retrieve one or more discovery documents.
@@ -100,13 +76,13 @@ dwv.google.Auth = function ()
         }).then( function () {
             dwv.log("dwv.google.Auth::onApiLoad: client.init success");
 
+            // get the auth instance
             googleAuth = gapi.auth2.getAuthInstance();
-
             // Listen for sign-in state changes.
-            googleAuth.isSignedIn.listen(handleResult);
+            googleAuth.isSignedIn.listen(updateSigninStatus);
+            // Handle the initial sign-in state.
+            updateSigninStatus(googleAuth.isSignedIn.get());
 
-            //self.signIn();
-            handleResult();
         }, function(error) {
             dwv.log("dwv.google.Auth::onApiLoad: client.init fail");
             dwv.log(error.error);
@@ -115,22 +91,22 @@ dwv.google.Auth = function ()
     }
 
     /**
-    * Launch callback if all good.
-    * @param {Object} authResult An OAuth 2.0 Token Object.
-    * See https://developers.google.com/api-client-library/...
-    *   ...javascript/reference/referencedocs#OAuth20TokenObject
+    * updateSigninStatus callback.
+    * @param {Boolean} isSignedIn Is the user signed in?
     */
-    function handleResult(/*authResult*/isSignedIn) {
-        dwv.log("dwv.google.Auth::handleResult");
+    function updateSigninStatus(isSignedIn) {
+        dwv.log("dwv.google.Auth::updateSigninStatus");
         dwv.log("isSignedIn: "+isSignedIn);
-        var user = googleAuth.currentUser.get();
-        var isAuthorized  = user.hasGrantedScopes(scope);
-        dwv.log("isAuthorized : "+isAuthorized );
-        //if (authResult && !authResult.error) {
-        if (isAuthorized ) {
-            self.onload();
-        } else {
-            self.onfail();
+
+        if (isSignedIn) {
+            var user = googleAuth.currentUser.get();
+            var isAuthorized = user.hasGrantedScopes(scope);
+            dwv.log("isAuthorized : "+isAuthorized );
+            if (isAuthorized) {
+                self.onload();
+            } else {
+                self.onfail();
+            }
         }
     }
 };
@@ -240,8 +216,8 @@ dwv.google.Drive = function ()
         // set the api key
         gapi.client.setApiKey(self.apiKey);
 
+        // load api
         var func = createApiLoad(self.getIds());
-        //gapi.client.load('drive', 'v2', func);
         gapi.client.load('drive', 'v3', func);
     };
 
@@ -270,23 +246,12 @@ dwv.google.Drive = function ()
         var batch = gapi.client.newBatch();
 
         for (var i = 0; i < ids.length; ++i) {
-            // Can't make it work, HTTPRequest sends CORS error...
             // see https://developers.google.com/drive/v3/reference/files/get
             var request = gapi.client.drive.files.get({
-                //'fileId': ids[i] // v2
                 //'fileId': ids[i], 'fields': 'webContentLink' // v3
                 'fileId': ids[i], 'fields': 'id' // v3
                 //'fileId': ids[i], 'alt': 'media' // v3
             });
-
-            // File path with v2??
-            // see https://developers.google.com/api-client-library/...
-            //   ...javascript/reference/referencedocs#gapiclientrequestargs
-            /*var request = gapi.client.request({
-                'path': '/drive/v2/files/' + ids[i],
-                'method': 'GET'
-            });*/
-
             // add to batch
             batch.add(request);
         }
@@ -307,7 +272,6 @@ dwv.google.Drive = function ()
         // ID-response map of each requests response
         var respKeys = Object.keys(resp);
         for ( var i = 0; i < respKeys.length; ++i ) {
-            //urls[urls.length] = resp[respKeys[i]].result.downloadUrl; // v2 request
             //urls[urls.length] = resp[respKeys[i]].result.webContentLink; // v3
             urls[urls.length] = "https://www.googleapis.com/drive/v3/files/"+resp[respKeys[i]].result.id+"?alt=media";
         }
@@ -330,7 +294,6 @@ dwv.google.getAuthorizedCallback = function (callback) {
 
         var header = {
             "name": "Authorization",
-            //"value": "Bearer " + gapi.auth.getToken().access_token
             "value": "Bearer " + oauthResponse.access_token,
             "token": oauthResponse.access_token
         };
