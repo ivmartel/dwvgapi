@@ -80,6 +80,10 @@ dwv.google.Auth = function ()
             googleAuth = gapi.auth2.getAuthInstance();
             // Listen for sign-in state changes.
             googleAuth.isSignedIn.listen(updateSigninStatus);
+            // Sign in the user if they are currently signed out.
+            if (googleAuth.isSignedIn.get() === false) {
+              googleAuth.signIn();
+            }
             // Handle the initial sign-in state.
             updateSigninStatus(googleAuth.isSignedIn.get());
 
