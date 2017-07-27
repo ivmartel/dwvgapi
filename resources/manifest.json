@@ -1,0 +1,32 @@
+{
+  "name": "dwvgapi",
+  "short_name": "dwvgapi",
+  "description": "Google API test for dwv. Used for testing purposes only.",
+  "version": "0.1.0.2",
+  "manifest_version": 2,
+  "app": {
+    "urls": [
+      "https://ivmartel.github.io/dwvgapi/demo/"
+    ],
+    "launch": {
+      "web_url": "https://ivmartel.github.io/dwvgapi/demo/index.html"
+    }
+  },
+  "icons": {
+    "50": "resources/icons/dwvgapi-50.png",
+    "128": "resources/icons/dwvgapi-128.png"
+  },
+  "offline_enabled": true,
+  "container": "GOOGLE_DRIVE",
+  "api_console_project_id": "575535891659",
+  "gdrive_mime_types": {
+    "http://drive.google.com/intents/opendrivedoc": [
+      {
+        "type": ["application/dicom", "application/vnd.google.drive.ext-type.dcm"],
+        "href": "https://ivmartel.github.io/dwvgapi/demo/index.html",
+        "title": "Open",
+        "disposition": "window"
+      }
+    ]
+  }
+}
