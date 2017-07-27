@@ -145,11 +145,15 @@ dwv.google.Picker = function ()
     function onApiLoad() {
         var view = new google.picker.View(google.picker.ViewId.DOCS);
         view.setMimeTypes("application/dicom");
+
+        var user = gapi.auth2.getAuthInstance().currentUser.get();
+        var oauthResponse = user.getAuthResponse(true);
+
         // see https://developers.google.com/picker/docs/reference#PickerBuilder
         var picker = new google.picker.PickerBuilder()
             .enableFeature(google.picker.Feature.NAV_HIDDEN)
             .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-            .setOAuthToken(gapi.auth.getToken().access_token)
+            .setOAuthToken(oauthResponse.access_token)
             .addView(view)
             .setCallback(handleResult)
             .build();
