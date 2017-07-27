@@ -312,7 +312,7 @@ dwv.google.getAuthorizedCallback = function (callback) {
  * GoogleDriveLoad gui.
  * @constructor
  */
-dwv.gui.GoogleDriveLoad = function (app)
+dwv.gui.GoogleDriveLoad = function ()
 {
     /**
      * Setup the gdrive load HTML to the page.
@@ -320,47 +320,46 @@ dwv.gui.GoogleDriveLoad = function (app)
     this.setup = function()
     {
         // behind the scenes authentification to avoid popup blocker
-        var gAuth = new dwv.google.Auth();
-        gAuth.loadSilent();
+        //var gAuth = new dwv.google.Auth();
+        //gAuth.loadSilent();
 
         // associated div
-        var gdriveLoadDiv = document.createElement("div");
-        gdriveLoadDiv.className = "gdrivediv";
-        gdriveLoadDiv.style.display = "none";
+        var loadButton = document.createElement("button");
+        loadButton.className = "ui-btn ui-btn-inline";
+        loadButton.id = "load-btn";
+        loadButton.style.display = "none";
+        loadButton.appendChild(document.createTextNode("load"));
 
-        // node
-        var node = app.getElement("loaderlist");
-        // append
-        node.appendChild(gdriveLoadDiv);
-        // refresh
-        dwv.gui.refreshElement(node);
+        var main = document.getElementById("main");
+        main.appendChild(loadButton);
     };
 
     /**
      * Display the file load HTML.
      * @param {Boolean} bool True to display, false to hide.
      */
-    this.display = function (bool)
+    this.display = function (bool, callback)
     {
         // gdrive div element
-        var node = app.getElement("loaderlist");
-        var filediv = node.getElementsByClassName("gdrivediv")[0];
-        filediv.style.display = bool ? "" : "none";
+        var loadButton = document.getElementById("load-btn");
+        loadButton.style.display = bool ? "" : "none";
 
-        if (bool) {
-            // jquery mobile dependent
-            $("#popupOpen").popup("close");
-            app.resetLoadbox();
-
+        var onClick = function() {
             var gAuth = new dwv.google.Auth();
             var gPicker = new dwv.google.Picker();
             var gDrive = new dwv.google.Drive();
             // pipeline
             gAuth.onload = gPicker.load;
             gPicker.onload = gDrive.loadIds;
-            gDrive.onload = dwv.google.getAuthorizedCallback(app.loadURLs);
+            gDrive.onload = dwv.google.getAuthorizedCallback(callback);
             // launch
-            gAuth.load();
+            gAuth.loadSilent();
+        };
+
+        if (bool) {
+            loadButton.onclick = onClick;
+        } else {
+            loadButton.onclick = function() {};
         }
     };
 };

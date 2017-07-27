@@ -87,8 +87,12 @@ gapitest.onInputURLs = function (urls, requestHeaders) {
 $(document).ready( function() {
     var query = dwv.utils.getUriQuery(window.location.href);
     if ( query && typeof query.input !== "undefined" ) {
+        console.debug("Query mode");
         gapitest.decodeQuery(query, gapitest.onInputURLs);
     } else {
-        console.warn("No query to process...");
+        console.debug("Picker mode");
+        var gDriveLoad = new dwv.gui.GoogleDriveLoad();
+        gDriveLoad.setup();
+        gDriveLoad.display(true, gapitest.onInputURLs);
     }
 });
