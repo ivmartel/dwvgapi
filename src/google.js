@@ -83,7 +83,7 @@ dwv.google.Auth = function ()
             // Sign in the user if they are currently signed out
             // or call update directly
             if (googleAuth.isSignedIn.get() === false) {
-                googleAuth.signIn();
+                googleAuth.signIn({'ux_mode': 'redirect'});
             } else {
                 updateSigninStatus(true);
             }
